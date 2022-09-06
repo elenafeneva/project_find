@@ -1,0 +1,96 @@
+<div class="card">
+    <p-toast position="top-center" key="tc"></p-toast>
+    <p-table #dt [value]="companyUsers" dataKey="id" [scrollable]="true" [rowHover]="true" [globalFilterFields]="['username','email','active','name']" selectionMode="single">
+        <ng-template pTemplate="caption">
+            <div class="table-header">
+                <span class="p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="{{'Search' | translate}}" />
+                </span>
+                <div class="p-d-flex p-jc-end" style="margin-top:-3rem;">
+                    <button pButton pRipple icon="pi pi-plus" label="{{'AddEmployee' | translate}}" class="p-button-secondary p-mr-2" (click)="openDialogSaveUser()"></button>
+                </div>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th [translate]="'Username'" pSortableColumn="username">username <p-sortIcon field="username"></p-sortIcon></th>
+                <th [translate]="'Email'" pSortableColumn="email">email <p-sortIcon field="email"></p-sortIcon></th>
+                <th [translate]="'Active'" pSortableColumn="active">active <p-sortIcon field="active"></p-sortIcon></th>
+                <th [translate]="'CompanyName'" pSortableColumn="name">name <p-sortIcon field="name"></p-sortIcon></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-user>
+            <tr class="p-selectable-row" [pSelectableRowDblClick]="user" (dblclick)="openDialogUser(user);">
+                <td>{{user.username}}</td>
+                <td>{{user.email}}</td>
+                <td *ngIf="user.active">
+                    <button pButton pRipple type="button" icon="pi pi-check" class="p-button-rounded p-button-success p-button-text"></button>
+                </td>
+                <td *ngIf="!user.active">
+                    <button pButton pRipple type="button" icon="pi pi-times" class="p-button-rounded p-button-danger p-button-text"></button>
+                </td>
+                <td>{{user.name}}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+
+<!--ADD/EDIT USER-->
+<p-dialog [(visible)]="userDialog" header="{{user?.email}}" [style]="{width: '800px'}">
+    <ng-template pTemplate="content">
+        <div class="p-grid card">
+            <div class="p-col-12 p-lg-4">
+                <div class="p-col-12">
+                    <div class="card">
+                        <label> <h6><span [translate]="'Image'"></span></h6></label>
+                        <div class="p-d-flex p-jc-center">
+                            <img id="imageViewer" *ngIf="user.image" [src]="user.image" alt="Image" width="150" class="p-shadow-4" />
+                            <img *ngIf="!user.image" src="assets/layout/images/user-image.png" width="150" class="p-shadow-4">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="p-col-12 p-lg-8">
+                <div class="p-fluid p-col-12">
+                    <span class="p-float-label">
+                        <input type="text" pInputText id="username" [(ngModel)]="user.username" [disabled]="deleteUserDialog" />
+                        <label for="username"><h6><span [translate]="'Username'"></span></h6></label>
+                    </span>
+                </div>
+                <div class="p-fluid p-col-12">
+                    <span class="p-float-label">
+                        <input type="text" pInputText id="email" [(ngModel)]="user.email" [disabled]="deleteUserDialog" />
+                        <label for="email"><h6><span [translate]="'Email'"></span></h6></label>
+                    </span>
+                </div>
+                <div class="p-fluid p-col-12">
+                    <span class="p-float-label">
+                        <input type="text" pInputText id="name" [disabled]="true" [(ngModel)]="company.name" [disabled]="true" />
+                        <label for="name"><h6><span [translate]="'CompanyName'"></span></h6></label>
+                    </span>
+                </div>
+                <div class="p-col-12">
+                    <label for="float-input">{{'Gender'|translate}}</label><br /><br />
+                    <div class="p-field-radiobutton">
+                        <p-radioButton name="sex" [disabled]="user?.id" value="0" [(ngModel)]="user.gender" inputId="Male"></p-radioButton>
+                        <label for="male"><span [translate]="'Male'"></span></label>
+                    </div>
+                    <div class="p-field-radiobutton">
+                        <p-radioButton name="sex" [disabled]="user?.id" value="1" [(ngModel)]="user.gender" inputId="Female"></p-radioButton>
+                        <label for="female"><span [translate]="'Female'"></span></label>
+                    </div>
+                </div>
+                <div class="p-fluid p-col-12">
+                    <p-checkbox [(ngModel)]="user.active" binary="true" inputId="binary" [disabled]="user?.id"></p-checkbox>
+                    <label for="binary">{{'Active'|translate}}</label>
+                </div>
+
+            </div>
+            </div>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <button *ngIf="deleteUserDialog" pButton pRipple label="{{'Delete' | translate}}" id="save" icon="pi pi-times" class="p-button-danger" (click)="deleteUser()"></button>
+        <button *ngIf="!deleteUserDialog" pButton pRipple label="{{'Save' | translate}}" id="save" icon="pi pi-check" class="p-button-success" (click)="saveCompanyUser()"></button>
+    </ng-template>
+</p-dialog>

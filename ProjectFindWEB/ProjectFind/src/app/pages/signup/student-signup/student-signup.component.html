@@ -1,0 +1,66 @@
+<div class="p-d-flex p-as-center p-jc-center">
+    <br />
+    <div class="p-col-8" style="padding:5rem">
+        <br />
+        <div class="p-d-flex" style="margin-left: -1rem;">
+            <div class="p-fluid p-col-12">
+                <label for="faculty"><span [translate]="'Faculty'"></span></label>
+                <p-autoComplete class="p-col-8" [dropdown]="true" inputId="faculty" (onKeyUp)="listFaculties($event)" [(ngModel)]="autoCompleteFaculty" [minLength]="2" [suggestions]="autoCompleteFacultySuggestions" field="facultyName" (completeMethod)="filtredFaculties($event)" scrollHeight="200px">
+                    <ng-template let-fac pTemplate="item">
+                        <div class="products-item">
+                            <div>{{fac.facultyName}} ({{fac.facultyAddress}})</div>
+                        </div>
+                    </ng-template>
+                </p-autoComplete>
+            </div>
+             <p-button icon="pi pi-plus" class="p-mt-5" (click)="openDialogSaveFaculty()"></p-button>
+        </div>
+        <div class="p-inputgroup">
+            <span class="p-inputgroup-addon"><i class="pi pi-envelope"></i></span>
+            <input type="text" pInputText placeholder="{{'StudentEmail' | translate}}" [(ngModel)]="student.studentEmail">
+        </div><br />
+        <div>
+            <span class="p-float-label">
+                <textarea id="float-input" rows="5" cols="50" pInputTextarea [(ngModel)]="student.biography"></textarea>
+                <label for="float-input">{{'Biography'| translate}}</label>
+            </span>
+        </div><br />
+        <div class="p-fluid p-grid">
+            <span class="p-col-11 p-md-12 p-float-label">
+                <p-calendar inputId="dateOfBirth" [(ngModel)]="student.startDateFax" [showIcon]="true" placeholder="{{'StartDate'|translate}}" dateFormat="dd.mm.yy" [monthNavigator]="true" [yearNavigator]="true" yearRange="1950:2030"></p-calendar>
+            </span>
+        </div>
+        <div class="p-fluid">
+            <p-dropdown [options]="degrees" class="p-col-12" [(ngModel)]="selectedDegree" placeholder="{{'StepenNaStudii'| translate}}" optionLabel="name" (onChange)="changeDegree()"></p-dropdown>
+        </div>
+        <p-radioButton name="academy" value="true" label="{{'Academy' | translate}}" [(ngModel)]="student.academy"></p-radioButton><br /> <br />
+        <div class="p-inputgroup" *ngIf="student.academy">
+            <span class="p-inputgroup-addon"><i class="pi pi-file"></i></span>
+            <input type="text" pInputText placeholder="{{'AcademyName' | translate}}" [(ngModel)]="student.academyName">
+        </div><br />
+        <br /><br />
+        <div class="p-d-flex p-jc-end">
+            <p-button label="{{'Next' | translate}}" icon="pi pi-arrow-right" (click)="NextPage()"></p-button>
+        </div>
+        <div class="p-d-flex p-jc-start" style="margin-top: -3.1rem;">
+            <p-button label="{{'Back' | translate}}" icon="pi pi-arrow-left" (click)="BackPage()"></p-button>
+        </div>
+    </div>
+</div>
+
+<!--CREATE  FACULTY  DIALOG-->
+<p-dialog header="{{'Faculty' | translate}}" [(visible)]="dialogSaveFaculty" [modal]="true" [style]="{width: '30vw'}">
+    <ng-template pTemplate="content">
+        <div class="p-inputgroup">
+            <span class="p-inputgroup-addon"><i class="pi pi-file"></i></span>
+            <input type="text" pInputText placeholder="{{'FacultyName' | translate}}" [(ngModel)]="faculty.facultyName">
+        </div><br />
+        <div class="p-inputgroup">
+            <span class="p-inputgroup-addon"><i class="pi pi-map-marker"></i></span>
+            <input type="text" pInputText placeholder="{{'FacultyAddress' | translate}}" [(ngModel)]="faculty.facultyAddress">
+        </div><br />
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <button pButton label="{{'Save' | translate}}" icon="pi pi-check" class="p-button-success" (click)="saveFaculty()"></button>
+    </ng-template>
+</p-dialog>

@@ -1,0 +1,57 @@
+<div class="layout-dashboard">
+    <div class="card" style="background-color: gainsboro;">
+        <div class="p-grid">
+            <!--COMPANY-->
+            <div class="p-col-12 p-md-6 p-xl-4">
+                <div class="card no-gutter widget-overview-box widget-overview-box-2">
+                    <span class="overview-title" [translate]="'CompanyNumber'"></span>
+                    <br />
+                    <br />
+                    <div class="grid p-fluid">
+                        <div class="field col-12 md:col-3" style="height:70px;">
+                            <p-inputNumber size="6px;" class="p-col-12" [inputStyle]="{'font-size':'40px','border': 'none','color':'#7986cb', 'text-align':'center'}" locale="en-US" mode="decimal" [(ngModel)]="companiesTotalNumber" [disabled]="true" max="2" placeholder="0.00" [maxFractionDigits]="2"></p-inputNumber>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--STUDENT-->
+            <div class="p-col-12 p-md-6 p-xl-4">
+                <div class="card no-gutter widget-overview-box widget-overview-box-4">
+                    <span class="overview-title" [translate]="'StudentNumber'"></span>
+                    <br />
+                    <br />
+                    <div class="grid p-fluid">
+                        <div class="field col-12 md:col-3" style="height:70px;">
+                            <p-inputNumber size="6px;" class="p-col-12" [inputStyle]="{'font-size':'40px','border': 'none','color':'#4dd0e1', 'text-align':'center'}" locale="en-US" mode="decimal" [(ngModel)]="studentsTotalNumber" [disabled]="true" max="2" placeholder="0.00" [maxFractionDigits]="2"></p-inputNumber>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--PROJECT-->
+            <div class="p-col-12 p-md-6 p-xl-4">
+                <div class="card no-gutter widget-overview-box widget-overview-box-3">
+                    <span class="overview-title" [translate]="'ProjectNumber'"></span>
+                    <br />
+                    <br />
+                    <div class="grid p-fluid">
+                        <div class="field col-12 md:col-3" style="height:70px;">
+                            <p-inputNumber size="6px;" class="p-col-12" [inputStyle]="{'font-size':'40px','border': 'none','color':'#4db6ac', 'text-align':'center'}" locale="en-US" mode="decimal" [(ngModel)]="projectsTotalNumber" [disabled]="true" max="2" placeholder="0.00" [maxFractionDigits]="2"></p-inputNumber>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="p-d-flex grid">
+        <div class="p-col-12 p-md-6 p-xl-4">
+            <p-chart type="bar" [data]="dataBar"></p-chart>
+        </div>
+        <div class="p-col-12 p-md-6 p-xl-4">
+            <p-chart type="pie" [data]="dataTopSKills"></p-chart>
+        </div>
+        <div class="p-col-12 p-md-6 p-xl-4">
+            <p-chart type="doughnut" [data]="dataPie"></p-chart>
+        </div>
+
+    </div>
+    </div>

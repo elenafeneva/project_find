@@ -1,0 +1,161 @@
+<div class="card">
+    <p-toast position="top-center" key="tc"></p-toast>
+    <p-fileUpload mode="basic" url="{{importURL}}" chooseLabel="{{'ChooseImage'|translate}}" accept="image/*" [maxFileSize]="1000000" (onUpload)="getImage()" [auto]="true" class="p-mr-2 p-d-inline-block"></p-fileUpload>
+    <div class="p-d-flex p-jc-center">
+        <div style="height:auto">
+            <h6><label><span [translate]="'Image'"></span></label></h6>
+            <img id="imageViewer" *ngIf="image" [src]="image" class="p-shadow-4" width="170">
+            <img *ngIf="!image" src="assets/layout/images/user-image.png" width="170">
+            <br />
+        </div>
+    </div>
+    <!--USER DATA-->
+    <div class="grid p-d-flex">
+        <div class="p-col-12 p-lg-6">
+            <div class="p-col-12 p-md-12">
+                <div class="p-inputgroup">
+                    <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
+                    <input type="text" pInputText placeholder="{{'Username' | translate}}" [(ngModel)]="user.username" [disabled]="true">
+                </div>
+            </div>
+            <div class="p-col-12 p-md-12">
+                <div class="p-inputgroup">
+                    <span class="p-inputgroup-addon"><i class="pi pi-envelope"></i></span>
+                    <input type="text" pInputText placeholder="{{'Email' | translate}}" [(ngModel)]="user.email">
+                </div>
+            </div>
+            <div class="p-col-12 p-md-12">
+                <div style="display:flex">
+                    <div class="p-field-radiobutton">
+                        <p-radioButton name="gender" value="0" [(ngModel)]="user.gender" inputId="Male"></p-radioButton>
+                        <label for="male"><span [translate]="'Male'"></span></label>
+                    </div>
+                    <div class="p-field-radiobutton" style="margin-left:3%">
+                        <p-radioButton name="gender" value="1" [(ngModel)]="user.gender" inputId="Female"></p-radioButton>
+                        <label for="female"><span [translate]="'Female'"></span></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="p-col-12 p-lg-6" *ngIf="user.student_Id">
+            <div class="p-col-12 p-md-12">
+                <div class="p-inputgroup">
+                    <span class="p-inputgroup-addon"><i class="pi pi-file"></i></span>
+                    <input type="text" pInputText [disabled]="true" placeholder="{{'FacultyName' | translate}}" [(ngModel)]="faculty.facultyName">
+                </div>
+            </div>
+            <div class="p-col-12 p-md-12">
+                <div class="p-inputgroup">
+                    <span class="p-inputgroup-addon"><i class="pi pi-map-marker"></i></span>
+                    <input type="text" pInputText [disabled]="true" placeholder="{{'FacultyAddress' | translate}}" [(ngModel)]="faculty.facultyAddress">
+                </div>
+            </div>
+            <div class="p-col-12 p-md-12">
+                <div class="p-inputgroup">
+                    <span class="p-inputgroup-addon"><i class="pi pi-envelope"></i></span>
+                    <input type="text" pInputText placeholder="{{'StudentEmail' | translate}}" [(ngModel)]="student.studentEmail">
+                </div>
+            </div>
+            <div class="p-col-12 p-md-12">
+                <div class="p-fluid">
+                    <span class="p-float-label">
+                        <p-calendar inputId="dateOfBirth" [(ngModel)]="student.startDateFax" [showIcon]="true" placeholder="{{'StartDate'|translate}}" dateFormat="dd.mm.yy" [monthNavigator]="true" [yearNavigator]="true" yearRange="1950:2030"></p-calendar>
+                    </span>
+                </div>
+            </div>
+            <div class="p-col-12 p-md-12">
+                <div class="p-fluid">
+                    <p-dropdown [options]="degrees" [(ngModel)]="selectedDegree" placeholder="{{'StepenNaStudii'| translate}}" optionLabel="name" (onChange)="changeDegree()"></p-dropdown>
+                </div>
+            </div>
+            <div class="p-col-12 p-md-12" *ngIf="student.academy">
+                <div class="p-inputgroup">
+                    <span class="p-inputgroup-addon"><i class="pi pi-file"></i></span>
+                    <input type="text" pInputText placeholder="{{'AcademyName' | translate}}" [(ngModel)]="student.academyName">
+                </div>
+            </div>
+            <div class="p-col-12 p-md-12">
+                <span class="p-float-label">
+                    <textarea id="float-input" rows="5" cols="50" pInputTextarea [(ngModel)]="student.biography"></textarea>
+                    <label for="float-input">{{'Biography'| translate}}</label>
+                </span>
+            </div>
+            <div class="p-col-12 p-md-12">
+                <button pButton pRipple type="button" label="{{'ChooseSkills'| translate}}" icon="pi pi-plus" (click)="openDialogSkills()"></button>
+            </div>
+            <div class="p-col-12 p-md-12" *ngIf="skillsData[0]">
+                <p-listbox [options]="skillsData" [disabled]="true" [(ngModel)]="skillsData" optionLabel="name" [listStyle]="{'max-height':'250px'}"></p-listbox>
+            </div>
+        </div>
+        <div class="p-col-12 p-lg-6" *ngIf="user.company_Id">
+            <div class="p-d-flex p-jc-end">
+                <div class="card">
+                    <label> <h6><span [translate]="'Company'"></span></h6></label>
+                    <img id="imageViewer" *ngIf="companyImage" [src]="companyImage" alt="Image" width="150" class="p-shadow-4" />
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!--SAVE DATA-->
+    <div class="p-d-flex p-jc-end">
+        <button pButton label="{{'Save' | translate}}" icon="pi pi-check" class="p-button-success" (click)="UpdateUser()"></button>
+    </div>
+</div>
+
+<!--CREATE  SKILLS  DIALOG-->   
+<p-dialog header="{{'ChooseSkills' | translate}}" [(visible)]="dialogSkills" [modal]="true" [style]="{width: '90vw'}">
+    <ng-template pTemplate="content">
+        <div>
+            <div class="threeGrid p-d-flex p-d-fluid p-as-center p-jc-center">
+                <div class="p-inputgroup">
+                    <span class="p-inputgroup-addon"><i class="pi pi-tag"></i></span>
+                    <input type="text" pInputText placeholder="{{'name' | translate}}" [(ngModel)]="skill.name" pTooltip="{{'SkillName' | translate}}">
+                </div>
+                <div class="p-inputgroup">
+                    <span class="p-inputgroup-addon"><i class="pi pi-ellipsis-h"></i></span>
+                    <input type="text" pInputText placeholder="{{'Description' | translate}}" [(ngModel)]="skill.description" pTooltip="{{'SkillDescription' | translate}}">
+                </div>
+                <div>
+                    <p-button icon="pi pi-plus" (click)="AddNewSkill()" pTooltip="{{'SkillAdd' | translate}}"></p-button>
+                </div>
+            </div>
+        </div>
+        <br/>
+        <div>
+            <p-table #dt [value]="skills" [(selection)]="selectedSkills" dataKey="id" [scrollable]="true" scrollHeight="500px" [globalFilterFields]="['name','description']">
+                <ng-template pTemplate="caption">
+                    <div class="table-header">
+                        <span class="p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="{{'Search' | translate}}" />
+                        </span>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width: 3rem"></th>
+                        <th [translate]="'name'" pSortableColumn="name">name <p-sortIcon field="name"></p-sortIcon></th>
+                        <th [translate]="'Description'" pSortableColumn="description">description <p-sortIcon field="description"></p-sortIcon></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-skill>
+                    <tr class="p-selectable-row">
+                        <td style="width: 3rem">
+                            <p-tableCheckbox [value]="skill"></p-tableCheckbox>
+                        </td>
+                        <td>{{skill.name}}</td>
+                        <td>{{skill.description}}</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+            <br />
+            <br />
+        </div>
+        </ng-template>
+        <ng-template pTemplate="footer">
+            <div class="p-jc-end">
+                <button pButton pRipple type="button" icon="pi pi-check" label="{{'Add' | translate}}" class="p-button-raised p-button-success" (click)="saveSkills()"></button>
+            </div>
+        </ng-template>
+</p-dialog>

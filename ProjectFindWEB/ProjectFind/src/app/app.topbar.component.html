@@ -1,0 +1,39 @@
+<div class="layout-topbar">
+    <div class="topbar-left">
+        <!--<a tabindex="0" class="menu-button" (click)="app.onMenuButtonClick($event)">
+            <i class="pi pi-chevron-left"></i>
+        </a>-->
+        <span class="topbar-separator"></span>
+        <ng-template ngFor let-item let-last="last" [ngForOf]="items">
+            <span class="viewname" style="text-transform: uppercase">{{item.label}}</span>
+        </ng-template>
+        <img id="logo-mobile" class="mobile-logo" src="assets/layout/images/logo-dark.svg" alt="diamond-layout" />
+    </div>
+
+    <div class="topbar-right">
+        <ul class="topbar-menu">
+            <li class="profile-item" [ngClass]="{'active-menuitem fadeInDown': appMain.topbarUserMenuActive}">
+                <a href="#" (click)="appMain.onTopbarUserMenuButtonClick($event)">
+                    <img src={{user.image}} *ngIf="user.image != null" class="profile-image" />
+                    <img src="assets/layout/images/user-image.png" *ngIf="user.image == null" class="profile-image" />
+                    <span class="profile-name">{{user.username}}</span>
+                </a>
+                <ul class="profile-menu fade-in-up">
+                    <li>
+                        <a routerLink="/pages/userprofile">
+                            <i class="pi pi-user"></i>
+                            <span>{{'Profile' | translate}}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="" (click)="Logout()">
+                            <i class="pi pi-power-off"></i>
+                            <span>{{'Logout' | translate}}</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+        </ul>
+    </div>
+</div>

@@ -1,0 +1,58 @@
+<p-toast position="top-center" key="tc"></p-toast>
+<br />
+<br />
+<div class="p-d-flex p-grid p-d-fluid p-as-center p-jc-center">
+    <div class="threeGrid">
+        <div class="p-inputgroup">
+            <span class="p-inputgroup-addon"><i class="pi pi-tag"></i></span>
+            <input type="text" pInputText placeholder="{{'name' | translate}}" [(ngModel)]="skill.name" pTooltip="{{'SkillName' | translate}}">
+        </div>
+        <div class="p-inputgroup">
+            <span class="p-inputgroup-addon"><i class="pi pi-ellipsis-h"></i></span>
+            <input type="text" pInputText placeholder="{{'Description' | translate}}" [(ngModel)]="skill.description" pTooltip="{{'SkillDescription' | translate}}">
+        </div>
+        <div>
+            <p-button icon="pi pi-plus" (click)="AddNewSkill()" pTooltip="{{'SkillAdd' | translate}}"></p-button>
+        </div>
+    </div>
+</div>
+<br />
+<br />
+<br />
+<hr />
+<div class="p-d-flex p-grid p-d-fluid p-as-center p-jc-center">
+    <p-table #dt [value]="skills" [(selection)]="selectedSkills" dataKey="id" [scrollable]="true" scrollHeight="500px" [globalFilterFields]="['name','description']">
+        <ng-template pTemplate="caption">
+            <div class="table-header">
+                <span class="p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="{{'Search' | translate}}" />
+                </span>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width: 3rem"></th>
+                <th [translate]="'name'" pSortableColumn="name">name <p-sortIcon field="name"></p-sortIcon></th>
+                <th [translate]="'Description'" pSortableColumn="description">description <p-sortIcon field="description"></p-sortIcon></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-skill>
+            <tr class="p-selectable-row">
+                <td style="width: 3rem">  
+                    <p-tableCheckbox [value]="skill"></p-tableCheckbox>
+                </td>
+                <td>{{skill.name}}</td>
+                <td>{{skill.description}}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+    <br />
+    <br />
+</div>
+<div class="p-d-flex p-jc-end">
+    <p-button label="{{'Next' | translate}}" icon="pi pi-arrow-right" (click)="NextPage()"></p-button>
+</div>
+<div class="p-d-flex p-jc-start" style="margin-top: -3.1rem;">
+    <p-button label="{{'Back' | translate}}" icon="pi pi-arrow-left" (click)="BackPage()"></p-button>
+</div>

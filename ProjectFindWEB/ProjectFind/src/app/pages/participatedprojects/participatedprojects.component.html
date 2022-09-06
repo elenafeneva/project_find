@@ -1,0 +1,87 @@
+<div class="card">
+    <p-dataView #dv [value]="projects" [paginator]="true" [rows]="10" filterBy="name"
+                [sortField]="sortField" [sortOrder]="sortOrder" layout="grid">
+        <ng-template pTemplate="header">
+            <div class="p-d-flex p-flex-row p-jc-between">
+                <span class="p-input-icon-left p-mb-2 p-md-0 p-mb-0">
+                    <i class="pi pi-search"></i>
+                    <input type="search" pInputText style="margin-right: 1rem;" placeholder="{{'SearchbyProjectName' | translate}}" (input)="dv.filter($event.target.value)">
+                    <p-multiSelect [options]="skillsList" [(ngModel)]="selectedSkillsFilter" defaultLabel="{{'SearchbySkills' | translate}}" optionLabel="name"></p-multiSelect>
+                    <button pButton pRipple type="button" style="margin-left:1rem" icon="pi pi-search" class="p-button-rounded" (click)="searchProjectBySkills()"></button>
+                </span>
+                <p-dataViewLayoutOptions></p-dataViewLayoutOptions>
+            </div>
+        </ng-template>
+        <ng-template let-project pTemplate="listItem">
+            <div class="p-col-12">
+                <div class="product-list-item">
+                    <div class="project-name">{{project.name}}</div>
+                    <div class="project-description">{{project.description}}</div>
+                </div>
+                <div class="product-list-action p-d-flex p-jc-between">
+                    <button pButton icon="pi pi-ellipsis-h" pTooltip="{{'ShowMore'| translate }}" style=" margin-right: 1rem;" (click)="showProjectDialog(project)" class="p-button-help"></button>
+                </div>
+            </div>
+        </ng-template>
+        <ng-template let-project pTemplate="gridItem">
+            <div class="p-col-12 p-md-4 p-col-4">
+                <div class="product-grid-item card">
+                    <div class="product-grid-item-content">
+                        <div class="project-name">{{project.name}}</div>
+                        <div class="project-description">{{project.description}}</div>
+                    </div>
+                </div>
+                <div class="product-list-action p-d-flex p-jc-between">
+                    <button pButton icon="pi pi-ellipsis-h" pTooltip="{{'ShowMore'| translate }}" style=" margin-right: 1rem;" (click)="showProjectDialog(project)" class="p-button-help"></button>
+                </div>
+            </div>
+        </ng-template>
+    </p-dataView>
+</div>
+
+<!--CREATE  PROJECT DIALOG-->
+<p-dialog header="{{projectName}}" [(visible)]="displayMaximizable" [modal]="true" [style]="{width: '80vw'}" [maximizable]="true"
+          [draggable]="false" [resizable]="false">
+    <ng-template pTemplate="header">
+        <img alt="Card" *ngIf="!companyImage" src="assets/layout/images/companyImage.png" style=" width: 100px; margin-left: 1rem; height: 100px;">
+        <img id="imageViewer" *ngIf="companyImage" [src]="companyImage" alt="Image" style=" width: 100px; margin-left: 1rem; height: 100px;" class="p-shadow-4" />
+        <h6>{{'Worker' | translate}}:{{projectUser.username}}</h6>
+        <h6>{{'WorkerEmail' | translate}}:{{projectUser.email}}</h6>
+    </ng-template>
+    <ng-template pTemplate>
+        <div class="p-grid">
+            <div class="p-col-12 p-lg-6">
+                <br />
+                <div class="p-inputgroup p-col-12" style="padding-bottom: 0;">
+                    <span class="p-float-label">
+                        <input type="text" pInputText [(ngModel)]="project.name" id="projectName" [disabled]="true">
+                        <label for="float-input">{{'ProjectName'|translate}}</label>
+                    </span>
+                </div>
+                <br />
+                <div class="p-col-12 p-lg-2" style="padding-bottom: 0;">
+                    <span class="p-float-label">
+                        <textarea id="float-input" rows="5" cols="70" [(ngModel)]="project.description" pInputTextarea [disabled]="true"></textarea>
+                        <label for="float-input">{{'Description'|translate}}</label>
+                    </span>
+                </div>
+            </div>
+            <div class="p-col-12 p-lg-6">
+                <br />
+                <p-listbox [disabled]="true" [options]="projectSkills" [showToggleAll]="false" optionLabel="name" [(ngModel)]="skillsStudent" [checkbox]="true" [multiple]="true" [listStyle]="{'max-height':'500px'}" [style]="{'width':'40rem'}">
+                    <p-footer>
+                        <b>{{'DescriptionSkillsStudentProject' | translate}}</b>
+                    </p-footer>
+                </p-listbox>
+
+            </div>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <div class="p-jc-end">
+            <button pButton pRipple type="button" icon="pi pi-times" label="{{'Unparticipate' | translate}}" class="p-button-raised p-button-danger" (click)="Unparticipate()"></button>
+        </div>
+    </ng-template>
+</p-dialog>
+
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
